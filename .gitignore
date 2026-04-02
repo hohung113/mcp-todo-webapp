@@ -1,0 +1,9 @@
+# backend
+TodoAI/**/bin/
+TodoAI/**/obj/
+TodoAI/**/.vs/
+TodoAI/**/appsettings.Development.json
+
+# frontend
+TodoAI_React/node_modules/
+TodoAI_React/dist/
