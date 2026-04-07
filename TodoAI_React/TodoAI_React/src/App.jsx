@@ -220,7 +220,7 @@ export default function App() {
       </main>
 
       <footer className={styles.footer}>
-        <span>TODO AGENT — powered by OneBit Solutions</span>
+        <span>TODO_AGENT — powered by OneBit Solutions 🚀</span>
       </footer>
     </div>
   );
