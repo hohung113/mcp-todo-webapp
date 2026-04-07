@@ -16,36 +16,26 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e
-
             cd /root/myapp
 
-            # Fix git ownership
-            git config --global --add safe.directory /root/myapp
 
-            # Sync code chuẩn 100%
-            git fetch origin
-            git reset --hard origin/main
+            git pull origin main
 
-            # Build FE
+
             cd TodoAI_React/TodoAI_React
-            docker build --no-cache -t todoai-fe .
+            docker build -t todoai-fe .
 
-            # Build BE
+
             cd /root/myapp/TodoAI
-            docker build --no-cache -t todoai-api .
+            docker build -t todoai-api .
 
-            # Restart container
+            # 🔥 Restart containers
             docker stop todoai-fe todoai-api || true
             docker rm todoai-fe todoai-api || true
 
-            # Run FE
-            docker run -d \
-              -p 80:80 \
-              --name todoai-fe \
-              todoai-fe
+            docker run -d -p 80:80 --name todoai-fe todoai-fe
 
-            # Run BE (inject ENV)
+             # Run BE (inject ENV)
             docker run -d \
               -p 5000:5000 \
               -e ASPNETCORE_ENVIRONMENT=Production \
@@ -53,5 +43,3 @@ jobs:
               -e Groq__ApiKey="${{ secrets.GROQ_API_KEY }}" \
               --name todoai-api \
               todoai-api
-
-            docker ps
