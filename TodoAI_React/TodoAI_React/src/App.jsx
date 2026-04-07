@@ -220,7 +220,7 @@ export default function App() {
       </main>
 
       <footer className={styles.footer}>
-        <span>🚀Powered by OneBit Solutions 🚀</span>
+        <span>🚀Powered by OneBit Solutions 2026🚀</span>
       </footer>
     </div>
   );
