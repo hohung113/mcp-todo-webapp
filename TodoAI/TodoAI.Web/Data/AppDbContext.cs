@@ -9,7 +9,7 @@ namespace TodoAI.Web.Data
             : base(options)
         {
         }
-
+        // Add comment BE
         public DbSet<Todo> Todos => Set<Todo>();
     }
 }
