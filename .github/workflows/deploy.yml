@@ -9,19 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Copy code to VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: "."
-          target: "/root/myapp"
-          rm: true
-
-      - name: Deploy
+      - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -30,8 +18,20 @@ jobs:
           script: |
             cd /root/myapp
 
-            docker compose pull || true
-            docker compose down
-            docker compose up -d --build
 
-            docker image prune -f
+            git pull origin main
+
+
+            cd TodoAI_React/TodoAI_React
+            docker build -t todoai-fe .
+
+
+            cd /root/myapp/TodoAI
+            docker build -t todoai-api .
+
+            # 🔥 Restart containers
+            docker stop todoai-fe todoai-api || true
+            docker rm todoai-fe todoai-api || true
+
+            docker run -d -p 80:80 --name todoai-fe todoai-fe
+            docker run -d -p 5000:5000 --name todoai-api todoai-api
