@@ -9,7 +9,8 @@ namespace TodoAI.Web.Data
             : base(options)
         {
         }
-        // Add comment BE
+        // Add comment BE 
+        // Config Key
         public DbSet<Todo> Todos => Set<Todo>();
     }
 }
